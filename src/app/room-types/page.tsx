@@ -1,4 +1,4 @@
-// app/room-types/page.tsx — РАБОЧАЯ ВЕРСИЯ
+// app/room-types/page.tsx — ФИНАЛЬНАЯ ИСПРАВЛЕННАЯ ВЕРСИЯ
 
 "use client";
 
@@ -38,14 +38,14 @@ export default function RoomTypesPage() {
           data = response.data;
         }
 
-        // Нормализуем: type_name должен быть всегда
+        // Нормализуем данные
         const normalized = data.map((room: any) => ({
           ...room,
           type_name: room.type_name || room.name || "Номер без названия",
           cheapest_price: room.cheapest_price || room.price_per_night || 0,
           photos: room.photos || [],
           amenities: room.amenities || [],
-        }))as RoomType[];
+        })) as RoomType[];
 
         setRooms(normalized);
       } catch (err: any) {
@@ -87,11 +87,11 @@ export default function RoomTypesPage() {
           )}
         </div>
 
-        {loading ? (
+        {loading ? ( // НАЧАЛО: Тернарный оператор 1 (Loading)
           <div className="flex justify-center py-20">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent"></div>
           </div>
-        ) : rooms.length === 0 ? (
+        ) : rooms.length === 0 ? ( // НАЧАЛО: Тернарный оператор 2 (Нет номеров)
           <div className="text-center py-20 bg-[#272727] rounded-3xl">
             <p className="text-3xl mb-8 text-gray-400">
               На выбранные даты нет свободных номеров
@@ -103,28 +103,20 @@ export default function RoomTypesPage() {
               Изменить даты
             </Link>
           </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        ) : ( // БЛОК: Номера найдены
+          <div className="flex flex-col gap-8">
             {rooms.map((room) => (
-              <RoomCard
-                key={room.id || room.slug}
-                room={{
-                  ...room,
-                  type_name: room.type_name || "Номер",
-                  cheapest_price: room.cheapest_price,
-                  photos: room.photos || [],
-                  amenities: room.amenities || [],
-                }}
-                
+              <RoomCard
+                key={room.id || room.slug}
+                room={room}
                 checkIn={checkIn || ''}
                 checkOut={checkOut || ''}
                 guests={guests}
-                
-              />
-            ))}
+              />
+            ))}
           </div>
-        )}
-      </div>
-    </div>
-  );
+        )} 
+      </div> 
+    </div> 
+  ); 
 }

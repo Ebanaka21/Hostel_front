@@ -1,18 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --glass-bg: rgba(10, 10, 10, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  
+  /* Черно-золотая цветовая схема */
+  --color-black: #0a0a0a;
+  --color-black-dark: #0d0d0d;
+  --color-black-darker: #050505;
+  --color-gold: #d4af37;
+  --color-gold-light: #e6c24f;
+  --color-gold-dark: #b8952d;
+  --color-gold-darker: #997a26;
+  --color-gold-accent: #ffd700;
+  --color-gold-hover: #ffdf40;
 }
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-light: var(--primary-light);
-  --color-primary-dark: var(--primary-dark);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -20,7 +28,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #ffffff;
   }
 }
 
@@ -56,8 +64,33 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(37, 16, 48, 0.5); }
-  50% { box-shadow: 0 0 20px rgba(37, 16, 48, 0.8), 0 0 30px rgba(37, 16, 48, 0.6); }
+  0%, 100% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 30px rgba(212, 175, 55, 0.4); }
+}
+
+@keyframes gold-sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes float-gold {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes rotate-gold {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes gold-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.7), 0 0 40px rgba(212, 175, 55, 0.5); }
 }
 
 .animate-fade-in {
@@ -70,6 +103,28 @@ body {
 
 .animate-pulse-glow {
   animation: pulse-glow 2s infinite;
+}
+
+.animate-gold-sparkle {
+  animation: gold-sparkle 2s infinite ease-in-out;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 3s infinite;
+}
+
+.animate-float-gold {
+  animation: float-gold 4s ease-in-out infinite;
+}
+
+.animate-rotate-gold {
+  animation: rotate-gold 8s linear infinite;
+}
+
+.animate-gold-pulse {
+  animation: gold-pulse 1.5s infinite;
 }
 
 @keyframes bounce {
@@ -135,4 +190,113 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #626262;
+}
+
+/* Золотые элементы */
+.gold-accent {
+  color: var(--color-gold);
+}
+
+.gold-bg {
+  background-color: var(--color-gold);
+}
+
+.gold-bg:hover {
+  background-color: var(--color-gold-hover);
+}
+
+.gold-border {
+  border-color: var(--color-gold);
+}
+
+.gold-glow {
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.gold-glow:hover {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+.gold-input {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.gold-input:focus {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  outline: none;
+}
+
+.gold-button {
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light));
+  color: var(--color-black);
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-button:hover {
+  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+}
+
+.gold-button:active {
+  transform: translateY(0);
+}
+
+.gold-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.gold-button:hover::after {
+  left: 100%;
+}
+
+/* Декоративные элементы */
+.gold-decoration {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--color-gold);
+  border-radius: 50%;
+  animation: gold-sparkle 2s infinite ease-in-out;
+}
+
+.gold-decoration:nth-child(odd) {
+  animation-delay: 0.5s;
+}
+
+.gold-decoration:nth-child(even) {
+  animation-delay: 1s;
+}
+
+/* Черный фон с золотыми акцентами */
+.black-gold-bg {
+  background: linear-gradient(135deg, #151515 0%, #262424 100%);
+}
+
+/* Формы с золотыми акцентами */
+.black-gold-form {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border-top: 2px solid var(--color-gold);
+  border-right: 2px solid var(--color-gold);
+}
+
+.black-gold-form:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.2);
 }

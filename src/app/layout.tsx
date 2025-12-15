@@ -7,6 +7,7 @@ import { ToastProvider } from "../components/ToastProvider";
 import Container from "../components/Container";
 import Footer from "../components/Footer";
 import { AuthChecker } from "../components/AuthChecker";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({
             {children}
           </Container>
           <Footer />
+          <ScrollToTopButton />
         </ToastProvider>
       </body>
     </html>

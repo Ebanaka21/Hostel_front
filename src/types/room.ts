@@ -20,12 +20,14 @@ export interface BookingData {
   guestData: {
     name: string;
     surname: string;
-    second_name: string;
-    birthday: string;
+    second_name?: string;
+    birthday?: string;
     phone: string;
+    email?: string;
     passport_series: string;
     passport_number: string;
     passport_issued_at: string;
     passport_issued_by: string;
+    special_requests?: string;
   };
 }

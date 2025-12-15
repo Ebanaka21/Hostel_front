@@ -69,39 +69,57 @@ export default function RegisterPage() {
       await auth.register({
         name: formData.name,
         email: formData.email,
+        phone: formData.phone,
         password: formData.password,
         password_confirmation: formData.password_confirmation,
-        phone: formData.phone,
       });
       addToast('Регистрация успешна!', 'success');
       router.push('/profile');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      addToast(error.response?.data?.message || 'Ошибка регистрации', 'error');
+      const message = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Ошибка регистрации';
+      addToast(message, 'error');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen text-white flex items-center justify-center bg-[#272727] px-4 sm:px-6">
+    <div className="min-h-screen flex items-center justify-center black-gold-bg px-4 sm:px-6 relative overflow-hidden">
       <AuthChecker />
-      <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-6 sm:p-8 md:p-10 shadow-2xl w-full max-w-sm md:max-w-md lg:max-w-lg animate-slide-in hover:shadow-3xl transition-shadow duration-300 flex flex-col justify-center">
-        <h1 className="text-2xl font-bold text-center mb-6 text-white">
-          Создать аккаунт
-        </h1>
-        <p className="text-center text-gray-400 mb-6">Присоединяйтесь к нашему сообществу</p>
+      
+      {/* Декоративные золотые элементы */}
+      <div className="gold-decoration" style={{ top: '10%', left: '10%' }}></div>
+      <div className="gold-decoration" style={{ top: '20%', right: '15%' }}></div>
+      <div className="gold-decoration" style={{ bottom: '30%', left: '20%' }}></div>
+      <div className="gold-decoration" style={{ bottom: '20%', right: '10%' }}></div>
+      <div className="gold-decoration" style={{ top: '60%', left: '5%' }}></div>
+      <div className="gold-decoration" style={{ top: '70%', right: '25%' }}></div>
+      <div className="gold-decoration" style={{ bottom: '10%', left: '50%' }}></div>
+
+      <div className="black-gold-form rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-sm md:max-w-md lg:max-w-lg relative z-10 animate-fade-in hover:shadow-3xl transition-shadow duration-300 my-10">
+        <div className="text-center mb-4">
+          <div className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-yellow-600 to-yellow-800 rounded-full flex items-center justify-center animate-rotate-gold">
+            <i className="bx bx-user-plus text-black text-2xl"></i>
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-1">
+            Создать аккаунт
+          </h1>
+          <p className="text-gray-400 text-xs">Присоединяйтесь к нашему сообществу</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 flex-1">
           <div className="animate-slide-in relative">
-            <label className="block text-sm font-medium mb-2">Имя</label>
+            <label className="block text-sm font-medium mb-2 text-white flex items-center">
+              <i className="bx bx-user mr-2 text-gray-400"></i>
+              Имя
+            </label>
             <div className="relative">
-              <i className="bx bx-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-white/30"
+                className="w-full pl-3 pr-3 py-3 gold-input rounded-lg text-white placeholder-gray-400 focus:gold-glow transition-all duration-300"
                 required
               />
             </div>
@@ -109,14 +127,16 @@ export default function RegisterPage() {
           </div>
 
           <div className="animate-slide-in relative" style={{ animationDelay: '0.1s' }}>
-            <label className="block text-sm font-medium mb-2">Email</label>
+            <label className="block text-sm font-medium mb-2 text-white flex items-center">
+              <i className="bx bx-envelope mr-2 text-gray-400"></i>
+              Email
+            </label>
             <div className="relative">
-              <i className="bx bx-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
-                className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-white/30"
+                className="w-full pl-3 pr-3 py-3 gold-input rounded-lg text-white placeholder-gray-400 focus:gold-glow transition-all duration-300"
                 required
               />
             </div>
@@ -124,28 +144,32 @@ export default function RegisterPage() {
           </div>
 
           <div className="animate-slide-in relative" style={{ animationDelay: '0.2s' }}>
-            <label className="block text-sm font-medium mb-2">Телефон</label>
+            <label className="block text-sm font-medium mb-2 text-white flex items-center">
+              <i className="bx bx-phone mr-2 text-gray-400"></i>
+              Телефон
+            </label>
             <div className="relative">
-              <i className="bx bx-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-white/30"
+                className="w-full pl-3 pr-3 py-3 gold-input rounded-lg text-white placeholder-gray-400 focus:gold-glow transition-all duration-300"
               />
             </div>
             {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
           </div>
 
           <div className="animate-slide-in relative" style={{ animationDelay: '0.3s' }}>
-            <label className="block text-sm font-medium mb-2">Пароль</label>
+            <label className="block text-sm font-medium mb-2 text-white flex items-center">
+              <i className="bx bx-lock-alt mr-2 text-gray-400"></i>
+              Пароль
+            </label>
             <div className="relative">
-              <i className="bx bx-lock-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
-                className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-white/30"
+                className="w-full pl-3 pr-3 py-3 gold-input rounded-lg text-white placeholder-gray-400 focus:gold-glow transition-all duration-300"
                 required
               />
             </div>
@@ -153,14 +177,16 @@ export default function RegisterPage() {
           </div>
 
           <div className="animate-slide-in relative" style={{ animationDelay: '0.4s' }}>
-            <label className="block text-sm font-medium mb-2">Подтверждение пароля</label>
+            <label className="block text-sm font-medium mb-2 text-white flex items-center">
+              <i className="bx bx-lock-alt mr-2 text-gray-400"></i>
+              Подтверждение пароля
+            </label>
             <div className="relative">
-              <i className="bx bx-lock-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
               <input
                 type="password"
                 value={formData.password_confirmation}
                 onChange={(e) => setFormData({...formData, password_confirmation: e.target.value})}
-                className="w-full pl-10 pr-4 py-3 glass border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 hover:border-white/30"
+                className="w-full pl-3 pr-3 py-3 gold-input rounded-lg text-white placeholder-gray-400 focus:gold-glow transition-all duration-300"
                 required
               />
             </div>
@@ -173,9 +199,9 @@ export default function RegisterPage() {
                 type="checkbox"
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
-                className="mr-2"
+                className="mr-2 w-4 h-4 text-yellow-500 bg-transparent border-gray-500 focus:ring-yellow-500"
               />
-              <span className="text-sm">Я принимаю правила</span>
+              <span className="text-sm text-white">Я принимаю правила</span>
             </label>
             {errors.terms && <p className="text-red-400 text-sm mt-1">{errors.terms}</p>}
           </div>
@@ -183,20 +209,28 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading || !acceptedTerms}
-            className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-[#251030] hover:bg-[#3a1a4a] disabled:bg-gray-600 rounded-lg font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-[#251030]/60 hover:scale-105 animate-pulse-glow text-base sm:text-lg"
+            className="w-full px-3 sm:px-4 py-3 gold-button rounded-lg font-semibold text-black transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base animate-gold-pulse"
           >
-            {loading ? 'Загрузка...' : 'Зарегистрироваться'}
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <i className="bx bx-loader-circle bx-spin mr-2"></i>
+                Загрузка...
+              </span>
+            ) : (
+              'Зарегистрироваться'
+            )}
           </button>
         </form>
 
         <div className="text-center mt-6 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-          <Link href="/login" className="text-[#3a1a4a] hover:text-[#251030] transition-colors duration-300">
+          <Link href="/login" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center justify-center text-sm">
+            <i className="bx bx-log-in mr-1"></i>
             Уже есть аккаунт? Войти
           </Link>
         </div>
 
-        <div className="text-center mt-4 animate-fade-in" style={{ animationDelay: '0.7s' }}>
-          <Link href="/" className="text-gray-400 hover:text-white transition-colors duration-300">Вернуться на главную</Link>
+        <div className="text-center mt-3 animate-fade-in" style={{ animationDelay: '0.7s' }}>
+          <Link href="/" className="text-gray-500 hover:text-gray-300 transition-colors duration-300 text-sm">Вернуться на главную</Link>
         </div>
       </div>
     </div>

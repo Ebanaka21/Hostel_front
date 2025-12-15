@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { auth } from '../lib/api';
-import { debugToken, checkLocalStorage } from '../lib/token-debug';
+import { debugToken } from '../lib/token-debug';
 import { useRouter } from 'next/navigation';
 
 export function AuthChecker() {
@@ -23,10 +23,9 @@ export function AuthChecker() {
       }
       
       // Проверяем localStorage
-      const token = checkLocalStorage();
+      const token = localStorage.getItem('token');
       
       if (!token) {
-        
         router.push('/login');
         return;
       }
@@ -35,14 +34,11 @@ export function AuthChecker() {
       try {
        
         const response = await auth.getUser();
-        console.log('✅ AuthChecker: токен валидный');
         
         // Если токен валидный, уведомляем об изменении аутентификации
         window.dispatchEvent(new Event('authChange'));
         
-      } catch (error: any) {
-        
-        
+      } catch (error) {
         // Токен недействителен, удаляем его
         localStorage.removeItem('token');
         router.push('/login');

@@ -108,7 +108,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky justify-center items-center top-0 z-50 bg-[#2E2D2D]">
+    <header className=" justify-center items-center top-0 z-50 bg-[#2E2D2D] border-b border-[#FFB200]">
       <div className="w-full justify-between px-4 sm:px-6 lg:px-8 py-3 flex items-center ">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 w-full">
@@ -130,7 +130,7 @@ const Header: React.FC = () => {
             <>
               <Link
                 href="/login"
-                className="px-10 py-3  bg-[#1E1E1E] text-white rounded-lg hover:bg-purple-500/10 transition"
+                className="px-10 py-3  bg-[#1E1E1E] text-white hover:bg-[#d4af37] rounded-lg hover: transition"
               >
                 Войти
               </Link>
@@ -155,11 +155,11 @@ const Header: React.FC = () => {
               </button>
 
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-gray-900/90 border border-white/5 rounded-lg shadow-lg py-2 animate-fade-in">
-                  <Link href="/profile" className="block px-4 py-2 text-white hover:bg-white/5">Профиль</Link>
-                  <Link href="/booking" className="block px-4 py-2 text-white hover:bg-white/5">Мои брони</Link>
-                  <div className="border-t border-white/5 my-1" />
-                  <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-red-400 hover:bg-white/5">Выйти</button>
+                <div className="absolute right-0 mt-2 w-56 bg-black/90 border border-gold/30 rounded-lg shadow-2xl py-2 animate-fade-in z-50 backdrop-blur-sm">
+                  <Link href="/profile" className="block px-4 py-2 text-white hover:bg-gold/10 transition-colors">Профиль</Link>
+                  <Link href="/booking" className="block px-4 py-2 text-white hover:bg-gold/10 transition-colors">Мои брони</Link>
+                  <div className="border-t border-gold/20 my-1" />
+                  <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-gold hover:bg-gold/10 transition-colors">Выйти</button>
                 </div>
               )}
             </div>

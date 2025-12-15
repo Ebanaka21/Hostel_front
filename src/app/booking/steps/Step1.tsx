@@ -13,22 +13,11 @@ interface Step1Props {
 
 // Функция для формирования URL изображения
 const getPhotoUrl = (photos: string[] | null | undefined): string => {
-  const API_URL = "http://127.0.0.1:8000";
-  const PLACEHOLDER = "/placeholder.jpg";
   const photoArray = Array.isArray(photos) ? photos : [];
+ 
 
-  if (photoArray.length === 0) return PLACEHOLDER;
-
-  const photoPath = photoArray[0];
-  const clean = photoPath.replace(/^\/+/g, "");
-
-  if (clean.includes("rooms/") || clean.includes("storage/")) {
-    return `${API_URL}/${
-      clean.startsWith("storage/") ? clean : "storage/" + clean
-    }`;
-  }
-
-  return `${API_URL}/storage/rooms/${clean}`;
+  // API уже возвращает правильные URL через formatPhotoUrl, используем их как есть
+  return photoArray[0];
 };
 
 export default function Step1({ data, setData, next }: Step1Props) {
@@ -82,7 +71,7 @@ export default function Step1({ data, setData, next }: Step1Props) {
               }));
               next();
             }}
-            className="bg-gray-800 rounded-2xl overflow-hidden cursor-pointer hover:ring-4 hover:ring-yellow-500 transition-all"
+            className="bg-gray-800 rounded-2xl overflow-hidden cursor-pointer transition-all"
           >
             <div className="relative h-64">
               <img
@@ -90,17 +79,14 @@ export default function Step1({ data, setData, next }: Step1Props) {
                 alt={room.type_name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  if (target.src !== "/placeholder.jpg") {
-                    target.src = "/placeholder.jpg";
-                  }
+                  console.warn('Failed to load image:', getPhotoUrl(room.photos));
                 }}
               />
               <div className="absolute bottom-4 right-4 bg-black/80 px-4 py-2 rounded-full">
                 от {room.cheapest_price.toLocaleString()} ₽
               </div>
             </div>
-            <div className="p-6">
+            <div className="p-6 bg-[#2E2D2D]">
               <h3 className="text-2xl font-bold mb-3">{room.type_name}</h3>
               <div className="flex flex-wrap gap-3 text-sm mb-4">
                 {room.amenities
@@ -108,7 +94,7 @@ export default function Step1({ data, setData, next }: Step1Props) {
                   .map((amenity: string, index: number) => (
                     <span
                       key={index}
-                      className="bg-gray-700 px-3 py-1 rounded-full"
+                      className=" border border-[#FFB200] text-white px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap"
                     >
                       {amenity}
                     </span>

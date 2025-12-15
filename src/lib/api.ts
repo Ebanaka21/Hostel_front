@@ -1,6 +1,11 @@
 // src/lib/api.ts
 import axios from "axios";
 
+export type AmenityType = {
+  name: string;
+  icon_class?: string | null;
+};
+
 export type RoomType = {
   id: string | number;
   type_name: string;
@@ -9,7 +14,7 @@ export type RoomType = {
   capacity: number;
   available_count: number;
   photos?: string[] | null;
-  amenities?: string[] | null;
+  amenities?: string[] | AmenityType[] | null;
   description?: string | null;
   price_per_night?: number;
   name?: string;
@@ -24,13 +29,17 @@ api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.set('Authorization', `Bearer ${token}`);
+      config.headers.Authorization = `Bearer ${token}`;
     }
   }
   return config;
 });
 
 export const auth = {
+  register: async (data: { name: string; email: string; phone?: string; password: string; password_confirmation: string }) => {
+    const res = await api.post("/register", data);
+    return res;
+  },
   login: async (data: { email: string; password: string }) => {
     const res = await api.post("/login", data);
     if (typeof window !== "undefined") {
@@ -43,7 +52,9 @@ export const auth = {
     if (typeof window !== "undefined") localStorage.removeItem("token");
   },
   getUser: () => api.get("/me"),
+  updateProfile: (data: { name?: string; surname?: string; second_name?: string; birthday?: string; phone?: string }) => api.post("/update-profile", data),
 };
+
 export const roomTypes = {
   // Все типы номеров (без фильтра по датам)
   getAll: async (params?: { check_in?: string; check_out?: string; guests?: number }) => {
@@ -58,7 +69,7 @@ export const roomTypes = {
     };
   },
   // Получение комнаты по ID (через загрузку доступных комнат с датами)
-  getById: async (id: string | number, checkIn?: string, checkOut?: string) => {
+  getByIdOld: async (id: string | number, checkIn?: string, checkOut?: string) => {
     const idStr = id.toString();
     
     // Если есть даты, ищем через available
@@ -128,16 +139,40 @@ export const roomTypes = {
       })),
     };
   },
+  // Получение конкретного номера по ID
+  getById: async (id: string | number) => {
+    const res = await api.get(`/rooms/id/${id}`);
+    return {
+      data: {
+        ...res.data,
+        id: res.data.id,
+        type_name: res.data.name,
+        cheapest_price: res.data.price_per_night,
+        slug: res.data.slug || '',
+        capacity: res.data.capacity,
+        available_count: res.data.available_count || 1,
+        photos: res.data.photos || [],
+        amenities: res.data.amenities || [],
+        description: res.data.description,
+      },
+    };
+  },
 };
 
 type BookingPayload = {
   room_id: string | number;
   check_in_date: string;
   check_out_date: string;
-  guests_count: number;
   guest_name: string;
+  guest_surname: string;
+  guest_second_name?: string;
+  guest_birthday?: string;
   guest_phone: string;
-  guest_email: string;
+  guest_email?: string;
+  guest_passport_series?: string;
+  guest_passport_number?: string;
+  guest_passport_issued_at?: string;
+  guest_passport_issued_by?: string;
   special_requests?: string;
 };
 

@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
 
           {/* Контакты */}
           <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-white text-lg font-semibold mb-4">Контакты</h3>
+            <h3 className="text-wtite text-lg font-semibold mb-4">Контакты</h3>
             <p className="text-sm mb-2">Email: HostelOtel@host.fun</p>
             <p className="text-sm mb-2">Телефон: +7 (903)338-41-41</p>
             <p className="text-sm">Адрес: Ул, Балонина 7, Волгоград</p>

@@ -300,3 +300,14 @@ body {
 .black-gold-form:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 175, 55, 0.2);
 }
+
+/* Swiper пагинация желтая */
+.swiper-pagination-bullet {
+  background: #2E2D2D !important;
+  opacity: 0.5 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #FFB200 !important;
+  opacity: 1 !important;
+}

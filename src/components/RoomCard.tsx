@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { RoomType, AmenityType } from '../lib/api';
@@ -86,8 +86,9 @@ export default function RoomCard({ room, checkIn, checkOut, guests = 1 }: RoomCa
                 <div className="relative w-full h-[300px] rounded-xl overflow-hidden bg-[#1f1f1f]">
                   {photos.length > 0 ? (
                     <Swiper
-                      modules={[Pagination]}
+                      modules={[Pagination, Autoplay]}
                       pagination={{ clickable: true }}
+                      autoplay={{ delay: 3000, disableOnInteraction: false }}
                       className="h-full"
                     >
                       {photos.map((photo, index) => (
@@ -184,8 +185,9 @@ export default function RoomCard({ room, checkIn, checkOut, guests = 1 }: RoomCa
             <div className="relative w-full h-[200px] sm:h-[250px] rounded-xl overflow-hidden bg-[#1f1f1f]">
               {photos.length > 0 ? (
                 <Swiper
-                  modules={[Pagination]}
+                  modules={[Pagination, Autoplay]}
                   pagination={{ clickable: true }}
+                  autoplay={{ delay: 3000, disableOnInteraction: false }}
                   className="h-full"
                 >
                   {photos.map((photo, index) => (

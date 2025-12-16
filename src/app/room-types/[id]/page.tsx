@@ -5,6 +5,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 import { roomTypes } from "@/lib/api"; // оставил как у тебя
 
 const API_URL = "http://127.0.0.1:8000";
@@ -45,8 +50,6 @@ export default function RoomDetailPage() {
   const [room, setRoom] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalIndex, setModalIndex] = useState(0);
 
@@ -55,8 +58,6 @@ export default function RoomDetailPage() {
   const [checkOut, setCheckOut] = useState<string>(searchParams.get("check_out") || "");
   const [guests, setGuests] = useState<string>(searchParams.get("guests") || "1");
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  const sliderRef = useRef<HTMLDivElement | null>(null);
 
   // booking params for "back" links
   const bookingParams = new URLSearchParams({
@@ -128,26 +129,14 @@ export default function RoomDetailPage() {
     }
   }, [checkIn, checkOut, room]);
 
-  // slider helpers
-  const nextSlide = () => {
-    if (!room) return;
-    setCurrentSlide((s) => (s + 1) % room.photos.length);
-  };
-  const prevSlide = () => {
-    if (!room) return;
-    setCurrentSlide((s) => (s - 1 + room.photos.length) % room.photos.length);
-  };
-  const goToSlide = (i: number) => {
-    setCurrentSlide(i);
-  };
 
-  // keyboard navigation for modal/slider
+  // keyboard navigation for modal
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (modalOpen) {
         if (e.key === "Escape") setModalOpen(false);
-        if (e.key === "ArrowLeft") prevSlide();
-        if (e.key === "ArrowRight") nextSlide();
+        if (e.key === "ArrowLeft") setModalIndex((i) => (i - 1 + (room?.photos?.length || 0)) % (room?.photos?.length || 1));
+        if (e.key === "ArrowRight") setModalIndex((i) => (i + 1) % (room?.photos?.length || 1));
       }
     };
     window.addEventListener("keydown", onKey);
@@ -157,7 +146,6 @@ export default function RoomDetailPage() {
   // open modal
   const openModal = (index = 0) => {
     setModalIndex(index);
-    setCurrentSlide(index);
     setModalOpen(true);
     document.body.style.overflow = "hidden";
   };
@@ -166,9 +154,6 @@ export default function RoomDetailPage() {
     document.body.style.overflow = "";
   };
 
-  const toggleFavorite = () => {
-    setIsFavorite((v) => !v);
-  };
 
   const handleBook = () => {
     if (!checkIn || !checkOut) {
@@ -233,68 +218,32 @@ export default function RoomDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left column: slider + description button */}
           <div className="flex flex-col gap-4">
-            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg bg-black">
-              {/* Slider */}
-              <div
-                ref={sliderRef}
-                className="h-full flex transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)`, width: `${sliderPhotos.length * 100}%` }}
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg bg-black">
+              <Swiper
+                modules={[Pagination, Autoplay]}
+                pagination={{ clickable: true }}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                className="h-full"
               >
                 {sliderPhotos.map((src: string, idx: number) => (
-                  <div key={idx} className="relative w-full flex-shrink-0 h-full">
-                    {/* Using next/image but fallback to img if external config not present */}
-                    <Image
-                      src={src}
-                      alt={`${room.type_name} - фото ${idx + 1}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover cursor-pointer"
-                      onClick={() => openModal(idx)}
-                      priority={idx === 0}
-                      onError={(e) => {
+                  <SwiperSlide key={idx}>
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={src}
+                        alt={`${room.type_name} - фото ${idx + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover cursor-pointer"
+                        onClick={() => openModal(idx)}
+                        priority={idx === 0}
+                        onError={(e) => {
 
-                      }}
-                    />
-                    <div className="absolute top-4 right-4">
-                      <button onClick={(e) => { e.stopPropagation(); toggleFavorite(); }} className="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition">
-                        <i className={`bx ${isFavorite ? "bx-heart" : "bx-heart"}`} />
-                      </button>
+                        }}
+                      />
                     </div>
-                  </div>
+                  </SwiperSlide>
                 ))}
-              </div>
-
-              {/* Prev/Next */}
-              <button
-                aria-label="Предыдущее фото"
-                onClick={(e) => { e.stopPropagation(); prevSlide(); }}
-                className="prev-btn absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 z-10"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-              </button>
-              <button
-                aria-label="Следующее фото"
-                onClick={(e) => { e.stopPropagation(); nextSlide(); }}
-                className="next-btn absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all duration-200 z-10"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </button>
-
-              {/* Dots */}
-              <div className="absolute bottom-4 w-full flex justify-center gap-2 z-10">
-                {sliderPhotos.slice(0, 5).map((_: string, idx: number) => (
-                  <button
-                    key={idx}
-                    onClick={() => goToSlide(idx)}
-                    className={`h-2 w-2 rounded-full ${idx === currentSlide ? "bg-white" : "bg-white/40"}`}
-                    aria-label={`Перейти к фото ${idx + 1}`}
-                  />
-                ))}
-              </div>
+              </Swiper>
             </div>
 
             <button
@@ -315,7 +264,7 @@ export default function RoomDetailPage() {
           </div>
 
           {/* Right column: info + booking widget */}
-          <div className="">
+          <div className="text-start">
             <h2 className="text-2xl font-bold text-white leading-tight">{room.type_name}</h2>
             <p className="text-white font-medium mt-1 uppercase tracking-widest text-lg">{room.short_name}</p>
 
@@ -466,10 +415,10 @@ export default function RoomDetailPage() {
           <button onClick={closeModal} className="absolute top-6 right-6 text-white hover:text-[#FFB200] text-4xl z-10">
             <i className="bx bx-x"></i>
           </button>
-          <button onClick={() => { setModalIndex((i) => (i - 1 + sliderPhotos.length) % sliderPhotos.length); setCurrentSlide((s) => (s - 1 + sliderPhotos.length) % sliderPhotos.length); }} className="absolute left-6 text-white hover:text-[#FFB200] text-4xl z-10">
+          <button onClick={() => setModalIndex((i) => (i - 1 + sliderPhotos.length) % sliderPhotos.length)} className="absolute left-6 text-white hover:text-[#FFB200] text-4xl z-10">
             <i className="bx bx-chevron-left"></i>
           </button>
-          <button onClick={() => { setModalIndex((i) => (i + 1) % sliderPhotos.length); setCurrentSlide((s) => (s + 1) % sliderPhotos.length); }} className="absolute right-6 text-white hover:text-[#FFB200] text-4xl z-10">
+          <button onClick={() => setModalIndex((i) => (i + 1) % sliderPhotos.length)} className="absolute right-6 text-white hover:text-[#FFB200] text-4xl z-10">
             <i className="bx bx-chevron-right"></i>
           </button>
 

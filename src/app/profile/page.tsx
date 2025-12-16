@@ -432,7 +432,7 @@ export default function ProfilePage() {
           </button>
           <button
             onClick={() => setActiveTab("bookings")}
-            className={`tab-button w-full text-left px-6 py-4 hover:bg-[#2E2D2D] flex items-center ${
+            className={`tab-button w-full text-left px-6 py-4 bg-[#2E2D2D] hover:bg-[#FFB200] flex items-center ${
               activeTab === "bookings" ? "bg-[#FFB200] text-black" : "text-white"
             }`}
           >
@@ -441,7 +441,7 @@ export default function ProfilePage() {
           </button>
           <button
             onClick={() => setActiveTab("settings")}
-            className={`tab-button w-full text-left px-6 py-4 hover:bg-[#2E2D2D] flex items-center ${
+            className={`tab-button w-full text-left px-6 py-4 bg-[#2E2D2D] hover:bg-[#FFB200] flex items-center ${
               activeTab === "settings" ? "bg-[#FFB200] text-black" : "text-white"
             }`}
           >

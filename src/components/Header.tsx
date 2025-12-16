@@ -171,9 +171,9 @@ const Header: React.FC = () => {
           <button
             onClick={() => setIsOpen((s) => !s)}
             aria-label="Toggle menu"
-            className="p-2 rounded-lg bg-white/6 hover:bg-white/8 transition"
+            className="p-3 rounded-lg bg-white/6 hover:bg-white/8 transition"
           >
-            <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none">
+            <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none">
               {isOpen ? (
                 <path stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -185,7 +185,7 @@ const Header: React.FC = () => {
       </div>
 
       {/* Mobile menu */}
-      <div className={`md:hidden bg-gradient-to-b from-black/60 to-gray-900/65 border-t border-white/5 overflow-hidden transition-[max-height,opacity] duration-300 ${isOpen ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'}`}>
+      <div className={`md:hidden bg-gradient-to-b from-black/60 to-[#493810] border-t border-white/5 overflow-hidden transition-[max-height,opacity] duration-300 ${isOpen ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="px-4 py-4 space-y-3">
           <Link href="/" className="block text-white/90 py-2" onClick={() => setIsOpen(false)}>Главная</Link>
           <Link href="/room-types" className="block text-white/90 py-2" onClick={() => setIsOpen(false)}>Номера</Link>

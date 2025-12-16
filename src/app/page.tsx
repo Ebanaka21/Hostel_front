@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { roomTypes, RoomType } from "../lib/api";
 import RoomCard from "../components/RoomCard";
@@ -81,36 +82,36 @@ export default function Home() {
           </p>
 
           {/* Форма поиска */}
-          <div className="bg-black/20 backdrop-blur-xl p-5 px-20 rounded-3xl shadow-2xl border border-white/20">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="bg-black/20 backdrop-blur-xl p-4 px-4 md:px-20 rounded-3xl shadow-2xl border border-white/20">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-6">
               <div>
-                <label className="block text-sm mb-2">Заезд</label>
+                <label className="block text-sm mb-1">Заезд</label>
                 <input
                   type="date"
                   value={checkIn}
                   onChange={(e) => setCheckIn(e.target.value)}
                   min={new Date().toISOString().split("T")[0]}
-                  className="w-full px-5 py-4 rounded-xl bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-4 focus:ring-orange-500/50"
+                  className="w-full px-3 py-3 rounded-xl bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-4 focus:ring-orange-500/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm mb-2">Выезд</label>
+                <label className="block text-sm mb-1">Выезд</label>
                 <input
                   type="date"
                   value={checkOut}
                   onChange={(e) => setCheckOut(e.target.value)}
                   min={minCheckoutDate}
-                  className="w-full px-5 py-4 rounded-xl bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-4 focus:ring-orange-500/50"
+                  className="w-full px-3 py-3 rounded-xl bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-4 focus:ring-orange-500/50"
                 />
               </div>
 
               <div>
-                <label className="block text-sm mb-2">Гости</label>
+                <label className="block text-sm mb-1">Гости</label>
                 <select
                   value={guests}
                   onChange={(e) => setGuests(Number(e.target.value))}
-                  className="w-full px-5 py-4 rounded-xl bg-[#4A4949] border border-white/30 text-white focus:outline-none focus:ring-4 focus:ring-orange-500/50"
+                  className="w-full px-3 py-3 rounded-xl bg-[#4A4949] border border-white/30 text-white focus:outline-none focus:ring-4 focus:ring-orange-500/50"
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                     <option key={n} value={n}>
@@ -123,7 +124,7 @@ export default function Home() {
               <div className="flex items-end">
                 <button
                   onClick={handleSearch}
-                  className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold py-4 px-8 rounded-xl shadow-2xl transform transition hover:scale-105 active:scale-95"
+                  className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold py-3 px-6 rounded-xl shadow-2xl transform transition hover:scale-105 active:scale-95"
                 >
                   Найти номера
                 </button>
@@ -167,18 +168,18 @@ export default function Home() {
         )}
       </section>
             <section className="w-full m-auto py-20">
-  {/* TITLE */}
-  <h2 className="text-center font-extrabold text-3xl mb-16 text-white">
-    О ОТЕЛЕ
-  </h2>
+          {/* TITLE */}
+          <h2 className="text-center font-extrabold text-2xl sm:text-3xl md:text-4xl mb-12 sm:mb-16 text-white">
+            О ОТЕЛЕ
+          </h2>
+       
+          {/* CONTENT ROW */}
+          <div className="w-full bg-[#272727] rounded-lg p-4 sm:p-6 md:p-10 flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-10 container m-auto ">
+       
+            {/* LEFT — TEXT BLOCK */}
+            <div className="md:w-1/2 flex flex-col gap-4 sm:gap-6 text-white leading-relaxed border-b border-[#FFB200] md:border-b-0 md:border-r border-[#FFB200]">
 
-  {/* CONTENT ROW */}
-  <div className="w-full bg-[#272727] rounded-lg p-10 flex flex-col md:flex-row gap-10 container m-auto ">
-
-    {/* LEFT — TEXT BLOCK */}
-    <div className="md:w-1/2 flex flex-col gap-6 text-white leading-relaxed border-r border-[#FFB200]">
-
-      <p className="font-bold text-lg text-start">
+      <p className="font-bold text-base sm:text-lg text-start">
         HostelStay — это не просто отель, а ваш дом вдали от дома. Мы предлагаем
         стильные номера с современным дизайном, где каждый гость чувствует себя
         особенным. Наслаждайтесь улучшенными стандартами по доступной цене,
@@ -186,16 +187,16 @@ export default function Home() {
       </p>
 
       <div className="space-y-3 text-start">
-        <p className=" text-xl ">Наши преимущества:</p>
+        <p className=" text-lg sm:text-xl ">Наши преимущества:</p>
 
-        <ul className="space-y-2 font-bold text-[16px] ">
+        <ul className="space-y-2 font-bold text-sm sm:text-base ">
           <li>• Удобное расположение в центре города.</li>
           <li>• Бесплатный Wi-Fi, свежий завтрак и круглосуточный сервис.</li>
           <li>• Экологичные материалы и чистота на высшем уровне.</li>
         </ul>
       </div>
 
-      <p className="text-[16px] font-light text-start">
+      <p className="text-sm sm:text-base font-light text-start">
         Забронируйте номер прямо сейчас и ощутите настоящую гостеприимность!
         Мы гарантируем безопасность (современные системы доступа) и незабываемые
         впечатления. <br /> <span className='font-bold'>Присоединяйтесь к тысячам довольных гостей HostelStay.</span>
@@ -213,10 +214,10 @@ export default function Home() {
     </div>
 
   </div>
-    <div className='m-auto w-full py-10' >
-      <a href="/room-types">
-        <button className='text-center text-xl font-bold bg-[#656565] py-4 px-10 rounded-xl'>найти лучший номер</button>
-      </a>
+    <div className='m-auto w-full py-10 flex justify-center' >
+      <Link href="/room-types">
+        <button className='text-base sm:text-lg font-bold bg-gradient-to-r from-orange-500 to-amber-600 py-2 sm:py-3 px-4 sm:px-6 rounded-xl hover:from-orange-600 hover:to-amber-700 transition'>найти лучший номер</button>
+      </Link>
     </div>
 </section>
 

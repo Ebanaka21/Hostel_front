@@ -2,9 +2,9 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#2E2D2D] text-white py-8 border-t border-[#FFB200]">
+    <footer className="bg-[#2E2D2D] text-white py-6 border-t border-[#FFB200]">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Логотип и описание */}
           <div className="flex flex-col items-center md:items-start">
             <div className="text-gray-200 text-2xl font-bold mb-2">HostelStay
@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
 
           {/* Контакты */}
           <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-wtite text-lg font-semibold mb-4">Контакты</h3>
+            <h3 className="text-white text-lg font-semibold mb-4">Контакты</h3>
             <p className="text-sm mb-2">Email: HostelOtel@host.fun</p>
             <p className="text-sm mb-2">Телефон: +7 (903)338-41-41</p>
             <p className="text-sm">Адрес: Ул, Балонина 7, Волгоград</p>
@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Копирайт */}
-        <div className="border-t border-[#FFB200] mt-8 pt-4 text-center">
+        <div className="border-t border-[#FFB200] mt-6 pt-3 text-center">
           <p className="text-sm">&copy; 2025 HostelStay. Все права защищены.</p>
         </div>
       </div>

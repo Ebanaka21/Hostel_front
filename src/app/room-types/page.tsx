@@ -2,14 +2,14 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import RoomCard from "@/components/RoomCard";
 import Link from "next/link";
 import { roomTypes, RoomType } from "@/lib/api";
 
 
-export default function RoomTypesPage() {
+function RoomTypesPageContent() {
   const searchParams = useSearchParams();
   const [rooms, setRooms] = useState<RoomType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -117,6 +117,18 @@ export default function RoomTypesPage() {
           </div>
         )} 
       </div> 
-    </div> 
-  ); 
+    </div>
+  );
+}
+
+export default function RoomTypesPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#1A1A1A] text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent"></div>
+      </div>
+    }>
+      <RoomTypesPageContent />
+    </Suspense>
+  );
 }

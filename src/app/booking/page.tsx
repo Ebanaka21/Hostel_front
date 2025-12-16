@@ -1,25 +1,26 @@
 // app/booking/page.tsx — главная точка входа
 'use client';
-import { useState, useEffect } from 'react'; // <-- ДОБАВЛЕН useEffect
+import { useState, useEffect, Suspense } from 'react'; // <-- ДОБАВЛЕН useEffect
 import { useSearchParams } from 'next/navigation'; // <-- ДОБАВЛЕН useSearchParams
-import { roomTypes } from '../../lib/api'; 
-import { RoomType, BookingData } from '../../types/room'; 
+import { roomTypes } from '../../lib/api';
+import { RoomType, BookingData } from '../../types/room';
 // Импорт шагов
 import Step1 from './steps/Step1';
 import Step2 from './steps/Step2';
 import Step3 from './steps/Step3';
 import Step4 from './steps/Step4';
-export default function BookingFlow() {
+
+function BookingFlowContent() {
   const searchParams = useSearchParams();
   // 1. Чтение параметров из URL
   const urlRoomId = searchParams.get('roomId');
   const urlCheckIn = searchParams.get('check_in') || '';
   const urlCheckOut = searchParams.get('check_out') || '';
   const urlGuests = Number(searchParams.get('guests')) || 1;
-  
+
   // Преобразуем roomId в число, если это возможно
   const roomIdNumber = urlRoomId ? Number(urlRoomId) : null;
-  
+
   // 2. Определение начального шага: Если есть ID номера и даты -> Шаг 3 (данные гостя)
   // Начальный шаг будет установлен после загрузки комнаты
   const [step, setStep] = useState(1);
@@ -43,20 +44,20 @@ export default function BookingFlow() {
       special_requests: '',
     }
   });
-  
+
   // 3. Загрузка данных комнаты при наличии roomId в URL
   useEffect(() => {
       if (!roomIdNumber) {
           setLoading(false);
           return;
       }
-  
+
       const fetchRoomDetails = async () => {
           setLoading(true);
           try {
               // Загружаем комнату напрямую по ID (с датами если есть)
               const response = await roomTypes.getById(roomIdNumber);
-              
+
               if (response.data) {
                   setBookingData(prev => ({
                       ...prev,
@@ -97,7 +98,7 @@ export default function BookingFlow() {
       };
       fetchRoomDetails();
   }, [roomIdNumber]); // Запускаем только при изменении roomId
-  
+
   // Устанавливаем правильный шаг после загрузки комнаты
   useEffect(() => {
     if (roomLoaded && step === 1) {
@@ -109,19 +110,19 @@ export default function BookingFlow() {
       }
     }
   }, [roomLoaded, roomIdNumber, urlCheckIn, urlCheckOut, step]);
-  
+
   const nextStep = () => {
     if (isAnimating) return;
-    
+
     setIsAnimating(true);
     setAnimationPhase('out');
     setPreviousStep(step);
-    
+
     // Сначала уводим текущий контент
     setTimeout(() => {
       setStep(prev => prev + 1);
       setAnimationPhase('in');
-      
+
       // Потом приводим новый контент
       setTimeout(() => {
         setIsAnimating(false);
@@ -129,19 +130,19 @@ export default function BookingFlow() {
       }, 500);
     }, 250);
   };
-  
+
   const prevStep = () => {
     if (isAnimating) return;
-    
+
     setIsAnimating(true);
     setAnimationPhase('out');
     setPreviousStep(step);
-    
+
     // Сначала уводим текущий контент
     setTimeout(() => {
       setStep(prev => prev - 1);
       setAnimationPhase('in');
-      
+
       // Потом приводим новый контент
       setTimeout(() => {
         setIsAnimating(false);
@@ -154,7 +155,7 @@ export default function BookingFlow() {
     if (step > previousStep) {
       return 'left'; // переход вперед
     } else if (step < previousStep) {
-      return 'right'; // переход назад  
+      return 'right'; // переход назад
     }
     return '';
   };
@@ -166,8 +167,9 @@ export default function BookingFlow() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
             <span className="ml-4 text-xl">Загрузка данных бронирования...</span>
         </div>
-     );
-  }
+      );
+    }
+
   return (
     <div className="min-h-screen text-white py-10 overflow-x-hidden">
       {/* Адаптивный прогресс-бар */}
@@ -188,7 +190,7 @@ export default function BookingFlow() {
             ))}
           </div>
         </div>
-        
+
         {/* Подписи этапов */}
         <div className="flex justify-center mt-4 overflow-x-auto">
           <div className="flex items-center gap-4 sm:gap-8 md:gap-12 lg:gap-20">
@@ -227,5 +229,18 @@ export default function BookingFlow() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BookingFlow() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
+        <span className="ml-4 text-xl">Загрузка...</span>
+      </div>
+    }>
+      <BookingFlowContent />
+    </Suspense>
   );
 }

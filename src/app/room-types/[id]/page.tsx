@@ -16,7 +16,7 @@ const API_URL = "http://127.0.0.1:8000";
 
 // Полный URL к фото
 const getPhotoUrl = (path?: string): string => {
-
+  if (!path) return "";
 
 // Если путь уже полный URL (начинается с http), возвращаем как есть
 if (path.startsWith('http')) {

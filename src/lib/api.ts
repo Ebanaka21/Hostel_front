@@ -21,7 +21,7 @@ export type RoomType = {
   cheapest_room_id?: string | number;
 };
 
-const BASE_URL = "https://apiddd.hostelstay.store/api"; // ← Создай переменную
+
 console.log('🚀 API BASE URL:', BASE_URL); // ← Используй переменную
 console.log('🔥 FILE LOADED AT:', new Date().toISOString()); // ← И ЭТО
 
@@ -146,7 +146,7 @@ export const roomTypes = {
   },
   // Получение конкретного номера по ID
   getById: async (id: string | number) => {
-    const res = await api.get(`/rooms/${id}`);
+    const res = await api.get(`/rooms/id/${id}`);
     return {
       data: {
         ...res.data,

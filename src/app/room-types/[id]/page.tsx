@@ -12,7 +12,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import { roomTypes } from "@/lib/api"; // оставил как у тебя
 
-const API_URL = "https://false617.beget.tech";
+const API_URL = "https://apiddd.hostelstay.store";
 
 // Полный URL к фото
 const getPhotoUrl = (path?: string): string => {

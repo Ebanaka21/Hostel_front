@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { RoomType, AmenityType } from '../lib/api';
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://apiddd.hostelstay.store";
 
 // Полный URL к фото
 const getCardPhotoUrl = (path: string | undefined): string => {

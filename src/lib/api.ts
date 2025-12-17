@@ -22,7 +22,7 @@ export type RoomType = {
 };
 
 const api = axios.create({
-  baseURL: "https://false617.beget.tech/api",
+  baseURL: "https://apiddd.hostelstay.store",
 });
 
 api.interceptors.request.use((config) => {

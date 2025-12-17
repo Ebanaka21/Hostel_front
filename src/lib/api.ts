@@ -21,9 +21,14 @@ export type RoomType = {
   cheapest_room_id?: string | number;
 };
 
+const BASE_URL = "https://apiddd.hostelstay.store/api"; // ← Создай переменную
+console.log('🚀 API BASE URL:', BASE_URL); // ← Используй переменную
+console.log('🔥 FILE LOADED AT:', new Date().toISOString()); // ← И ЭТО
+
 const api = axios.create({
   baseURL: "https://apiddd.hostelstay.store/api",
 });
+console.log('✅ Axios instance baseURL:', api.defaults.baseURL); // ← И ЭТО
 
 api.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {

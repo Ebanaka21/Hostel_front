@@ -22,7 +22,7 @@ export type RoomType = {
 };
 
 const api = axios.create({
-  baseURL: "https://apiddd.hostelstay.store",
+  baseURL: "https://apiddd.hostelstay.store/api",
 });
 
 api.interceptors.request.use((config) => {
@@ -69,7 +69,7 @@ export const roomTypes = {
     };
   },
   // Получение комнаты по ID (через загрузку доступных комнат с датами)
-  getByIdOld: async (id: string | number, checkIn?: string, checkOut?: string) => {
+  Old: async (id: string | number, checkIn?: string, checkOut?: string) => {
     const idStr = id.toString();
     
     // Если есть даты, ищем через available
@@ -80,16 +80,16 @@ export const roomTypes = {
       if (r) {
         return {
           data: {
-            ...r,
-            id: Number(r.id),
-            type_name: r.name || r.type_name || "Номер",
-            cheapest_price: Number(r.price_per_night || r.cheapest_price),
-            slug: r.slug || '',
-            capacity: Number(r.capacity),
-            available_count: r.available_count || 1,
-            photos: r.photos || [],
-            amenities: r.amenities || [],
-            description: r.description,
+            ...res.data,
+        id: res.data.id,
+        type_name: res.data.name,
+        cheapest_price: res.data.price_per_night,
+        slug: res.data.slug || '',
+        capacity: res.data.capacity,
+        available_count: res.data.available_count || 1,
+        photos: res.data.photos || [],
+        amenities: res.data.amenities || [],
+        description: res.data.description,
           },
         };
       }
@@ -141,7 +141,7 @@ export const roomTypes = {
   },
   // Получение конкретного номера по ID
   getById: async (id: string | number) => {
-    const res = await api.get(`/rooms/id/${id}`);
+    const res = await api.get(`/rooms/${id}`);
     return {
       data: {
         ...res.data,
